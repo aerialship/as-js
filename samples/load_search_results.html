@@ -9,18 +9,18 @@
 <body>
     <div class="container">
         <div class="row">
-            <h1>Load remove content with AJAX</h1>
+            <h1>Load search result with AJAX</h1>
             <p>When button is clicked, it loads HTML content from specified url and puts it to specified target element</p>
 
             <textarea class="code" style="width: 99%; height: 360px" readonly>
-<button type="button"
-    data-as='{
-        "click": {
+<input type="text" id="query"
+   data-as='{
+        "keyup": {
             "load": {
-                "url": "./data/partial_content.html",
-                "block": true,
-                "blockOptions": {
-                    "message": "<h2>Custom loading message</h2>"
+                "url": "./data/country_search.php",
+                "buffer": 300,
+                "data": {
+                    "q": ["val", "#query"]
                 },
                 "success": {
                     "html": {
@@ -30,7 +30,7 @@
             }
         }
     }'
->Load content</button>
+/>
 
 <div id="div"></div>
 </textarea>
@@ -38,14 +38,16 @@
         </div>
         <div class="row mt-30">
             <div class="col-md-6">
-                <button type="button"
+                Search:
+                <input type="text" id="search"
                     data-as='{
-                        "click": {
+                        "keyup": {
                             "load": {
-                                "url": "./data/partial_content.php?sleep=1000",
-                                "block": true,
-                                "blockOptions": {
-                                    "message": "<h2>Custom loading message</h2>"
+                                "url": "./data/country_search.php?sleep=1000",
+                                "buffer": 300,
+                                "data": {
+                                    "q": ["val", "#search"],
+                                    "s": ["val", "#starts_with:checked"]
                                 },
                                 "success": {
                                     "html": {
@@ -55,7 +57,9 @@
                             }
                         }
                     }'
-                >Load content</button>
+                />
+                <input type="checkbox" id="starts_with" value="1" />
+                <label for="starts_with">Starts with</label>
             </div>
             <div id="target" class="col-md-6">
                 it will be loaded here...

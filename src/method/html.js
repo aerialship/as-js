@@ -3,9 +3,14 @@ AS.container.set('html', function(options) {
     AS.assertDefined(options, ['result']);
 
     var html = typeof options.result == 'object' ? options.result.body : options.result,
-        $result = $(html),
+        $result,
         $target
     ;
+
+    if (html.trim().indexOf('<') != 0) {
+        html = '<span>' + html + '</span>';
+    }
+    $result = $(html);
 
     if (options.target) {
         $target = $(options.target);

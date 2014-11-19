@@ -80,7 +80,7 @@
         });
         for (fn in cmd) {
             if (cmd.hasOwnProperty(fn)) {
-                options = cmd[fn];
+                options = $.extend(true, {}, cmd[fn]);
                 options = options ? options : {};
                 options.dom = $dom.get(0);
                 options.$dom = $dom;
@@ -89,6 +89,8 @@
                 result = AS.container.call(fn, options);
             }
         }
+
+        return result;
     };
 
     AS.bind = function(root, reset) {
@@ -152,7 +154,7 @@
                 }
             }
         }
-    }
+    };
 
     AS.assertTrue = function(options, names, origin) {
         var i, name;
@@ -164,7 +166,7 @@
                 }
             }
         }
-    }
+    };
 
     AS.assertDefined = function(options, names, origin) {
         var i, name;
@@ -176,6 +178,16 @@
                 }
             }
         }
-    }
+    };
+
+    AS.assertSelector = function(selector, msg) {
+        var jq = $(selector);
+
+        if (jq.length == 0) {
+            throw new SyntaxError(msg);
+        }
+
+        return jq;
+    };
 
 })(window, jQuery);
