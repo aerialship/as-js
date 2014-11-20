@@ -1,0 +1,6 @@
+{
+    "name": "as-js",
+    "dependencies": {
+        "jquery-mockjax": "1.5.3"
+    }
+}
