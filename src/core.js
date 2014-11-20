@@ -103,6 +103,11 @@
                 data = $dom.data('as'),
                 eventName, cmd
             ;
+
+            if (typeof data != "object") {
+                throw new SyntaxError('data-as must be an object');
+            }
+
             index = index ? index : {};
             stopPropagation = typeof stopPropagation == 'undefined' ? true : stopPropagation;
             preventDefault = typeof preventDefault == 'undefined' ? true : preventDefault;

@@ -20,44 +20,29 @@
     <div id="qunit-fixture"></div>
 
     <div id="container1">
-        <div data-id="div1" data-as='{
-            click: {
-                "first": { a: 1 }
+        <button id="b1" data-as='{
+            "click": {
+                "dummy": { "a": 1 }
             }
-        }'>
-            <div data-id="div2" data-as='{
-                click: {
-                    "first": { a: 3 },
-                }
-            }'></div>
-        </div>
+        }'>1</button>
+        <button id="b2" data-as='{
+            "click": {
+                "dummy": { "a": 2 }
+            }
+        }'>2</button>
     </div>
 
     <div id="container2">
-        <div data-id="div1" data-as='{
-            click: {
-                "first": { a: 1 }
+        <button id="b3" data-as='{
+            "click": {
+                "dummy": { "a": 3 }
             }
-        }'>
-            <div data-id="div2" data-as='{
-                click: {
-                    "first": { a: 3 },
-                }
-            }'></div>
-        </div>
-    </div>
-
-    <div id="container3">
-        <div data-id="div3" data-as='{
-            click: {
-                "first": { a: 4 },
+        }'>3</button>
+        <button id="b4" data-as='{
+            "click": {
+                "dummy": { "a": 4 }
             }
-        }'></div>
-        <div data-id="div3" data-as='{
-            click: {
-                "first": { a: 4 },
-            }
-        }'></div>
+        }'>4</button>
     </div>
 
 </body>

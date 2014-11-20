@@ -34,7 +34,10 @@ module.exports = function(grunt) {
         qunit: {
             all: {
                 options: {
-                    urls: ['http://localhost:8000/tests/unit/core/index.html']
+                    urls: [
+                        'http://localhost:8000/tests/unit/core/index.html',
+                        'http://localhost:8000/tests/unit/load/index.html'
+                    ]
                 }
             }
         }
