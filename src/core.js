@@ -104,7 +104,7 @@
                 eventName, cmd
             ;
 
-            if (typeof data != "object") {
+            if (typeof data != 'object') {
                 throw new SyntaxError('data-as must be an object');
             }
 

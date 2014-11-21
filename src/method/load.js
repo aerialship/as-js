@@ -4,11 +4,20 @@ AS.container.set('load', function(options) {
 
     var ajaxOptions = options.ajaxOptions || {},
         blockOptions, $block,
-        name, method, selector, $jq, m, value,
+        name, method, selector, args, $jq, m, value,
         buffer, timer, $dom
     ;
 
+    AS.log({
+        msg: 'AS - load',
+        options: options
+    });
+
     if (options.block) {
+        AS.log({
+            msg: 'AS - load - block',
+            block: options.block
+        });
         blockOptions = options.blockOptions || {};
         if (options.block == true && typeof $.blockUI == 'function') {
             $.blockUI(blockOptions);
@@ -20,25 +29,47 @@ AS.container.set('load', function(options) {
         }
     }
 
-    ajaxOptions.data = ajaxOptions.data || {};
     if (options.data) {
+        ajaxOptions.data = ajaxOptions.data || {};
         for (name in options.data) {
-            method = options.data[name][0];
-            selector = options.data[name][1];
-            $jq = $(selector);
-            m = $jq[method];
-            value = m.bind($jq)();
-            ajaxOptions.data[name] = value;
+            if (options.data.hasOwnProperty(name)) {
+                selector = options.data[name][0];
+                method = options.data[name][1];
+                args = options.data[name][2] || [];
+                $jq = $(selector);
+                m = $jq[method];
+                if (!m) {
+                    throw new SyntaxError('jQuery of selector "' + selector + '" does not have a method "' + method + '"');
+                }
+                value = m.apply($jq, args);
+                ajaxOptions.data[name] = value;
+                AS.log({
+                    msg: 'AS - load - data',
+                    selector: selector,
+                    method: method,
+                    args: args,
+                    value: value
+                })
+            }
         }
     }
 
     ajaxOptions.success = function(data) {
+        AS.log({
+            msg: 'AS - load - success',
+            options: options,
+            data: data
+        });
         if (options.success) {
             AS.execute(options.dom, options.success, null, data);
         }
     };
 
     ajaxOptions.complete = function() {
+        AS.log({
+            msg: 'AS - load - complete',
+            options: options
+        });
         if ($block && typeof $block.unblock == 'function') {
             $block.unblock();
         }
@@ -50,7 +81,14 @@ AS.container.set('load', function(options) {
         }
     };
 
-    ajaxOptions.error = function() {
+    ajaxOptions.error = function(jqXHR, textStatus, errorThrown) {
+        AS.log({
+            msg: 'AS - load - error',
+            textStatus: textStatus,
+            errorThrown: errorThrown,
+            jqXHR: jqXHR,
+            options: options
+        });
         if (options.error) {
             AS.execute(options.dom, options.error);
         }

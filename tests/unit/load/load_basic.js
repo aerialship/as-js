@@ -7,7 +7,10 @@
 
         var expectedResult = '<p>response</p>';
 
+        $.mockjaxClear();
+
         $.mockjax({
+            logging: false,
             url: 'data1.json',
             response: function() {
                 assert.ok(true);
@@ -29,7 +32,10 @@
 
         var expectedResult = '<p>response</p>';
 
+        $.mockjaxClear();
+
         $.mockjax({
+            logging: false,
             url: 'data2.json',
             response: function() {
                 assert.ok(true);
@@ -51,8 +57,11 @@
     QUnit.asyncTest('adds data to request', function(assert) {
         assert.expect(2);
 
+        $.mockjaxClear();
+
         $.mockjax({
             url: 'data3.json',
+            logging: false,
             response: function(settings) {
                 assert.equal(settings.data.a, "aaa");
                 assert.equal(settings.data.b, "bbb");
@@ -74,7 +83,10 @@
     QUnit.test('calls block on body', function(assert) {
         assert.expect(2);
 
+        $.mockjaxClear();
+
         $.mockjax({
+            logging: false,
             url: /.*/,
             responseText: ''
         });
