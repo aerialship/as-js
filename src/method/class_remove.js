@@ -7,5 +7,9 @@ AS.container.set('class.remove', function(options) {
 
     $target.removeClass(options.class);
 
+    if (options.success) {
+        AS.execute(options.dom, options.success);
+    }
+
     return $target.length;
 });

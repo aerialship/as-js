@@ -36,7 +36,9 @@ module.exports = function(grunt) {
                 options: {
                     urls: [
                         'http://localhost:8000/tests/unit/core/index.html',
-                        'http://localhost:8000/tests/unit/load/index.html'
+                        'http://localhost:8000/tests/unit/load/index.html',
+                        'http://localhost:8000/tests/unit/class_add/index.html',
+                        'http://localhost:8000/tests/unit/class_remove/index.html'
                     ]
                 }
             }

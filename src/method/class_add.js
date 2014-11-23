@@ -7,5 +7,9 @@ AS.container.set('class.add', function(options) {
 
     $target.addClass(options.class);
 
+    if (options.success) {
+        AS.execute(options.dom, options.success);
+    }
+
     return $target.length;
 });
