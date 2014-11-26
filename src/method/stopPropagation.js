@@ -1,6 +1,6 @@
 
 AS.container.set('stopPropagation', function(options) {
-    if (options.event && typeof option.event.stopPropagation == 'function') {
-        option.event.stopPropagation();
+    if (options.domEvent && typeof option.domEvent.stopPropagation == 'function') {
+        option.domEvent.stopPropagation();
     }
 });

@@ -14,6 +14,6 @@ AS.container.set('bs.modal.load', function(options) {
                 }
             }
         }
-    }, options.event);
+    }, options.domEvent);
 
 });

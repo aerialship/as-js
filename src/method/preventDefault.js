@@ -1,6 +1,6 @@
 
 AS.container.set('preventDefault', function(options) {
-    if (options.event && typeof option.event.preventDefault == 'function') {
-        option.event.preventDefault();
+    if (options.domEvent && typeof option.domEvent.preventDefault == 'function') {
+        option.domEvent.preventDefault();
     }
 });

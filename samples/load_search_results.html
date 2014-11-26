@@ -12,7 +12,7 @@
             <h1>Load search result with AJAX</h1>
             <p>When button is clicked, it loads HTML content from specified url and puts it to specified target element</p>
 
-            <textarea class="code" style="width: 99%; height: 360px" readonly>
+            <textarea class="code" style="width: 99%; height: 400px" readonly>
 <input type="text" id="query"
    data-as='{
         "keyup": {
@@ -20,7 +20,8 @@
                 "url": "./data/country_search.php",
                 "buffer": 300,
                 "data": {
-                    "q": ["val", "#query"]
+                    "q": ["#query", "val"],
+                    "s": ["#start:checked", "val"]
                 },
                 "success": {
                     "html": {
@@ -31,6 +32,8 @@
         }
     }'
 />
+<input type="checkbox" id="starts" value="1" />
+<label for="starts">Starts with</label>
 
 <div id="div"></div>
 </textarea>
@@ -46,8 +49,8 @@
                                 "url": "./data/country_search.php?sleep=1000",
                                 "buffer": 300,
                                 "data": {
-                                    "q": ["val", "#search"],
-                                    "s": ["val", "#starts_with:checked"]
+                                    "q": ["#search", "val"],
+                                    "s": ["#starts_with:checked", "val"]
                                 },
                                 "success": {
                                     "html": {

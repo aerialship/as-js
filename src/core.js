@@ -5,7 +5,8 @@
     AS.debug = false;
 
     AS.container = {
-        _items: {}
+        _actions: {},
+        _listeners: {}
     };
 
     AS.container.set = function(name, fn, scope) {
@@ -15,7 +16,7 @@
             fn: fn,
             scope: scope
         });
-        AS.container._items[name] = {
+        AS.container._actions[name] = {
             fn: fn,
             scope: scope ? scope : null
         };
@@ -26,7 +27,7 @@
             msg: 'AS - container - remove',
             name: name
         });
-        delete AS.container._items[name];
+        delete AS.container._actions[name];
     };
 
     AS.container.call = function(name, options) {
@@ -38,16 +39,16 @@
             options: options
         });
 
-        if (AS.container._items[name] &&
-            typeof AS.container._items[name].fn &&
-            typeof AS.container._items[name].fn.apply == 'function'
+        if (AS.container._actions[name] &&
+            typeof AS.container._actions[name].fn &&
+            typeof AS.container._actions[name].fn.apply == 'function'
         ) {
-            scope = AS.container._items[name].scope ? AS.container._items[name].scope : null;
+            scope = AS.container._actions[name].scope ? AS.container._actions[name].scope : null;
 
             if (scope) {
-                result = AS.container._items[name].fn.apply(scope, [options]);
+                result = AS.container._actions[name].fn.apply(scope, [options]);
             } else {
-                result = AS.container._items[name].fn(options);
+                result = AS.container._actions[name].fn(options);
             }
 
             AS.log({
@@ -61,13 +62,19 @@
         }
     };
 
+    AS.container.getEventListeners = function(eventName) {
+        return typeof AS.container._listeners[eventName] != 'undefined'
+            ? AS.container._listeners[eventName]
+            : [];
+    };
+
     AS.log = function() {
         if (AS.debug) {
             console.log(arguments);
         }
     };
 
-    AS.execute = function(dom, cmd, event, result) {
+    AS.execute = function(dom, cmd, domEvent, result) {
         var $dom = $(dom).first(),
             fn, options;
         if (cmd == null || typeof cmd == 'undefined') {
@@ -84,7 +91,7 @@
                 options = options ? options : {};
                 options.dom = $dom.get(0);
                 options.$dom = $dom;
-                options.event = event;
+                options.domEvent = domEvent;
                 options.result = options.result ? options.result : result;
                 result = AS.container.call(fn, options);
             }
@@ -101,7 +108,7 @@
                 stopPropagation = $dom.data('asStopPropagation'),
                 preventDefault = $dom.data('asPreventDefault'),
                 data = $dom.data('as'),
-                eventName, cmd
+                eventName, cmd, listenerAdded
             ;
 
             if (typeof data != 'object') {
@@ -114,6 +121,20 @@
 
             for (eventName in data) {
                 if (data.hasOwnProperty(eventName)) {
+                    if (typeof AS.container._listeners[eventName] == 'undefined') {
+                        AS.container._listeners[eventName] = [];
+                    }
+                    listenerAdded = false;
+                    $(AS.container._listeners[eventName]).each(function() {
+                        if (this == $dom.get(0)) {
+                            listenerAdded = true;
+                            return false;
+                        }
+                    });
+                    if (!listenerAdded) {
+                        AS.container._listeners[eventName].push($dom.get(0));
+                    }
+
                     cmd = data[eventName];
 
                     if (reset) {
@@ -127,15 +148,17 @@
                     index[eventName] = 1;
                     $dom.data('asIndex', index);
 
-                    $dom.on(eventName, function(e) {
-                        if (stopPropagation) {
-                            e.stopPropagation();
+                    $dom.on(eventName, (function(c) {
+                        return function(e) {
+                            if (stopPropagation) {
+                                e.stopPropagation();
+                            }
+                            if (preventDefault) {
+                                e.preventDefault();
+                            }
+                            AS.execute($dom, c, e);
                         }
-                        if (preventDefault) {
-                            e.preventDefault();
-                        }
-                        AS.execute($dom, cmd, e);
-                    });
+                    })(cmd));
 
                 }
             }

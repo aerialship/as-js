@@ -10,9 +10,9 @@
         var fn = function() { var x = 1; };
         AS.container.set(name, fn);
 
-        assert.ok(AS.container._items[name]);
-        assert.equal(AS.container._items[name].fn, fn);
-        assert.equal(AS.container._items[name].scope, null);
+        assert.ok(AS.container._actions[name]);
+        assert.equal(AS.container._actions[name].fn, fn);
+        assert.equal(AS.container._actions[name].scope, null);
     });
 
     QUnit.test('set function with scope', function(assert) {
@@ -24,9 +24,9 @@
 
         AS.container.set(name, fn, scope);
 
-        assert.ok(AS.container._items[name]);
-        assert.equal(AS.container._items[name].fn, fn);
-        assert.equal(AS.container._items[name].scope, scope);
+        assert.ok(AS.container._actions[name]);
+        assert.equal(AS.container._actions[name].fn, fn);
+        assert.equal(AS.container._actions[name].scope, scope);
     });
 
     QUnit.test('remove function', function(assert) {
@@ -36,11 +36,11 @@
         var fn = function() { };
         AS.container.set(name, fn);
 
-        assert.ok(AS.container._items[name]);
+        assert.ok(AS.container._actions[name]);
 
         AS.container.remove(name);
 
-        assert.equal(AS.container._items[name], undefined);
+        assert.equal(AS.container._actions[name], undefined);
     });
 
     QUnit.test('call function w/out scope', function(assert) {
