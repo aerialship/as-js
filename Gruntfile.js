@@ -23,6 +23,16 @@ module.exports = function(grunt) {
                 }
             }
         },
+        zip: {
+            'using-cwd': {
+                cwd: 'build/Release',
+                dest: 'build/dist/asjs.zip',
+                src: [
+                    'build/Release/as.js',
+                    'build/Release/as.min.js'
+                ]
+            }
+        },
         connect: {
             server: {
                 options: {
@@ -50,10 +60,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-zip');
 
     grunt.registerTask('default', ['lint', 'test']);
     grunt.registerTask('test', ['connect', 'qunit']);
-    grunt.registerTask('build', ['concat', 'uglify']);
+    grunt.registerTask('build', ['concat', 'uglify', 'zip']);
     grunt.registerTask('lint', ['jscs']);
 
     grunt.registerTask('all', ['build', 'jscs', 'test']);
