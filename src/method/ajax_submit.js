@@ -1,9 +1,9 @@
 
 AS.container.addBindListener(function(root) {
-    $(root).find('form[data-ajax-submit]').each(function() {
+    $(root).find('form[data-ajax-form]').each(function() {
         var _this = this,
             $form = $(_this),
-            options = $form.data('dataAjaxSubmit'),
+            options = $form.data('dataAjaxForm'),
             beforeSubmit, success
         ;
         if (!options) {
