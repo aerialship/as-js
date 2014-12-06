@@ -11,6 +11,8 @@ AS.container.set('bs.modal.show', function(options) {
         throw new SyntaxError('bs.modal.show missing content or not html');
     }
 
+    AS.bind($modal);
+
     if (typeof $modal.modal != 'function') {
         throw new SyntaxError('bs.modal.show missing modal function - bootstrap not loaded?');
     }

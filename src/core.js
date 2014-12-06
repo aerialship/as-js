@@ -6,7 +6,8 @@
 
     AS.container = {
         _actions: {},
-        _listeners: {}
+        _listeners: {},
+        _bindListeners: []
     };
 
     AS.container.set = function(name, fn, scope) {
@@ -66,6 +67,17 @@
         return typeof AS.container._listeners[eventName] != 'undefined'
             ? AS.container._listeners[eventName]
             : [];
+    };
+
+    AS.container.addBindListener = function(callback) {
+        AS.container._bindListeners.push(callback);
+    };
+
+    AS.container.callBindListeners = function(root) {
+        var r = root;
+        $.each(AS.container._bindListeners, function() {
+            this(r);
+        })
     };
 
     AS.log = function() {
@@ -164,6 +176,7 @@
             }
         });
 
+        AS.container.callBindListeners($root);
     };
 
     AS.prepareOptions = function(options, spec) {
