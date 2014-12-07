@@ -4,6 +4,7 @@ AS.container.addBindListener(function(root) {
         var _this = this,
             $form = $(_this),
             options = $form.data('dataAjaxForm'),
+            $parent = $form.parent(),
             beforeSubmit, success
         ;
         if (!options) {
@@ -26,6 +27,7 @@ AS.container.addBindListener(function(root) {
         };
 
         options.success = function(responseText, statusText, xhr, jqForm) {
+            AS.bind($parent);
             if (typeof $.unblockUI == 'function') {
                 $.unblockUI();
             }
@@ -44,7 +46,7 @@ AS.container.addBindListener(function(root) {
 
 AS.container.set('ajax.submit', function(options) {
 
-    var $form, opt, $target, $block, blockOptions;
+    var $form, opt, $target, $block, blockOptions, $parent;
 
     AS.ajaxSubmit = {
         setDefaultButton: function(frm, btn) {
@@ -98,9 +100,10 @@ AS.container.set('ajax.submit', function(options) {
     }
 
     $target = $(opt.target);
+    $parent = $target.parent();
 
     opt.success = function(response, statusText, jqXHR, jqForm) {
-        AS.bind($target);
+        AS.bind($parent);
         if (typeof $form.unblock == 'function') {
             $form.unblock();
         }
