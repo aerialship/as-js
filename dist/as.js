@@ -114,6 +114,7 @@
 
     AS.bind = function(root, reset) {
         var $root = root ? $(root) : $('body');
+        AS.container.callBindListeners($root);
         $root.find('[data-as]').each(function() {
             var $dom = $(this),
                 index = $dom.data('asIndex'),
@@ -175,8 +176,6 @@
                 }
             }
         });
-
-        AS.container.callBindListeners($root);
     };
 
     AS.prepareOptions = function(options, spec) {
