@@ -88,9 +88,14 @@
 
     AS.execute = function(dom, cmd, domEvent, result) {
         var $dom = $(dom).first(),
-            fn, options;
+            fn, options, tmp;
         if (cmd == null || typeof cmd == 'undefined') {
             cmd = {};
+        }
+        if (typeof cmd == 'string') {
+            tmp = {};
+            tmp[cmd] = null;
+            cmd = tmp;
         }
         AS.log({
             msg: 'AS - execute - start',
