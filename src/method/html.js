@@ -28,6 +28,7 @@ AS.container.set('html', function(options) {
     } else {
         $target.html($result);
     }
+    AS.bind($target);
 
     if (options.success) {
         AS.execute($result, options.success);
