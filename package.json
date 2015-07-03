@@ -2,7 +2,7 @@
     "name": "as-js",
     "title": "AS-JS",
     "description": "Lightweight javascript framework that minimize writing of javascript with implementation of common operations and their easy binding to dom trough special data attribute",
-    "version": "1.0.0",
+    "version": "0.3.4",
     "homepage": "http://aerialship.com/as-js",
     "author": {
         "name": "AerialShip",
