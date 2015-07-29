@@ -3,7 +3,7 @@ header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
 header('Pragma: no-cache'); // HTTP 1.0.
 header('Expires: 0'); // Proxies.
 
-if ($_GET['sleep']) {
+if (@$_GET['sleep']) {
     $sleep = intval($_GET['sleep']);
     if ($sleep > 1 && $sleep < 5000) {
         usleep($sleep*1000);

@@ -88,7 +88,7 @@
 
     AS.execute = function(dom, cmd, domEvent, result) {
         var $dom = $(dom).first(),
-            fn, options, tmp;
+            fn, options, tmp, obj;
         if (cmd == null || typeof cmd == 'undefined') {
             cmd = {};
         }
@@ -104,7 +104,12 @@
         });
         for (fn in cmd) {
             if (cmd.hasOwnProperty(fn)) {
-                options = $.extend(true, {}, cmd[fn]);
+                obj = cmd[fn];
+                if (typeof obj == 'object') {
+                    options = $.extend(true, {}, obj);
+                } else {
+                    options = { result: obj };
+                }
                 options = options ? options : {};
                 options.dom = $dom.get(0);
                 options.$dom = $dom;
