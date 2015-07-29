@@ -29,6 +29,12 @@ AS.container.set('bs.modal.copy', function(options) {
             $modal.find(selector).addClass(options.class[selector]);
         }
     }
+    if (options.title) {
+        $modal.find('.modal-title').html(options.title);
+    }
+    if (options.body) {
+        $modal.find('.modal-body').html(options.body);
+    }
 
     if (options.append) {
         $parent.append($modal);
