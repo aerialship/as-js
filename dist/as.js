@@ -508,6 +508,7 @@ AS.container.set('bs.modal.copy.load', function(options) {
     ;
 
     loadOptions.success = {
+        'bs.modal.copy': copyOptions,
         html: {
             target: '#' + copyOptions.to + ' .modal-body'
         }
@@ -517,7 +518,6 @@ AS.container.set('bs.modal.copy.load', function(options) {
     }
 
     AS.execute(options.dom, {
-        'bs.modal.copy': copyOptions,
         load: loadOptions
     }, options.domEvent);
 
