@@ -88,7 +88,7 @@
 
     AS.execute = function(dom, cmd, domEvent, result) {
         var $dom = $(dom).first(),
-            fn, options, tmp;
+            fn, options, tmp, obj;
         if (cmd == null || typeof cmd == 'undefined') {
             cmd = {};
         }
@@ -104,7 +104,12 @@
         });
         for (fn in cmd) {
             if (cmd.hasOwnProperty(fn)) {
-                options = $.extend(true, {}, cmd[fn]);
+                obj = cmd[fn];
+                if (typeof obj == 'object') {
+                    options = $.extend(true, {}, obj);
+                } else {
+                    options = { result: obj };
+                }
                 options = options ? options : {};
                 options.dom = $dom.get(0);
                 options.$dom = $dom;
@@ -429,6 +434,87 @@ AS.container.set('block', function(options) {
             $.blockUI();
         }
     }
+});
+
+
+AS.container.set('bs.modal.copy', function(options) {
+    AS.assertTrue(options, ['from', 'to'], 'bs.modal.copy');
+
+    var $source = $(options.from), $modal, $parent, selector;
+
+    if ($source.length != 1) {
+        throw new SyntaxError('bs.modal.copy from selector must evaluate to one element');
+    }
+    if (!$source.hasClass('modal')) {
+        throw new SyntaxError('bs.modal.copy source element does not have modal class - is it really a modal?');
+    }
+
+    $modal = $source.clone();
+    $modal.attr('id', options.to);
+
+    if (options.parent) {
+        $parent = $(options.parent);
+    } else {
+        $parent = $('body');
+        options.append = true;
+    }
+    if ($parent.length != 1) {
+        throw new SyntaxError('ms.modal.copy parent selector must evaluate to one element');
+    }
+
+    if (options.class) {
+        for (selector in options.class) {
+            $modal.find(selector).addClass(options.class[selector]);
+        }
+    }
+
+    if (options.append) {
+        $parent.append($modal);
+    } else {
+        $parent.html($modal);
+    }
+
+    AS.bind($modal);
+
+    if (typeof $modal.modal != 'function') {
+        throw new SyntaxError('bs.modal.show missing modal function - bootstrap not loaded?');
+    }
+
+    $modal.modal('show');
+
+    if (options.removeOnClose || typeof options.removeOnClose == 'undefined') {
+        $modal.on('hidden.bs.modal', function() {
+            $(this).remove();
+        });
+    }
+
+    return options.result;
+});
+
+
+AS.container.set('bs.modal.copy.load', function(options) {
+
+    AS.assertTrue(options, ['load'], 'bs.modal.copy.load');
+    AS.assertTrue(options, ['copy'], 'bs.modal.copy.load');
+
+    var loadOptions = $.extend(true, {}, options.load),
+        copyOptions = $.extend(true, {}, options.copy)
+    ;
+
+    loadOptions.success = {
+        html: {
+            target: '#' + copyOptions.to + ' .modal-body'
+        }
+    };
+    if (loadOptions.block == 'modal') {
+        loadOptions.block = loadOptions.success.html.target;
+    }
+
+    AS.execute(options.dom, {
+        'bs.modal.copy': copyOptions,
+        load: loadOptions
+    }, options.domEvent);
+
 });
 
 
@@ -827,6 +913,19 @@ AS.container.set('preventDefault', function(options) {
     if (options.domEvent && typeof option.domEvent.preventDefault == 'function') {
         option.domEvent.preventDefault();
     }
+});
+
+
+AS.container.set('result', function(options) {
+    if (typeof options != 'object') {
+        return options;
+    } else if (options.result) {
+        return options.result;
+    } else if (options.data) {
+        return options.data;
+    }
+
+    return null;
 });
 
 
